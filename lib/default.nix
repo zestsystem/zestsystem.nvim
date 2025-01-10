@@ -17,7 +17,7 @@ in rec {
     pkgs = legacyPackages.${system};
   in
     buildVimPlugin {
-      name = "TheAltF4Stream";
+      name = "zestsystem";
       postInstall = ''
         rm -rf $out/.envrc
         rm -rf $out/.gitignore
@@ -103,7 +103,7 @@ in rec {
     with pkgs; [
       # languages
       nodejs
-      python310Full
+      python314
       rustc
 
       # language servers
