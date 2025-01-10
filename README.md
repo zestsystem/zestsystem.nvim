@@ -1,4 +1,4 @@
 # zestsystem.nvim
-# zestsystem.nvim
-# zestsystem.nvim
-# zestsystem.nvim
+
+
+My neovim config
