@@ -131,7 +131,7 @@ in rec {
       gofumpt
       golines
       alejandra
-      python310Packages.black
+      python314Packages.black
       rustfmt
       terraform
 
