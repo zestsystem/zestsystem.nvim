@@ -209,6 +209,13 @@ local function init()
             }
         },
         nil_ls = {
+            settings = {
+                ['nil'] = {
+                    formatting = {
+                        command = { "nixfmt" },
+                    }
+                }
+            }
         },
         purescriptls = {
             settings = {
