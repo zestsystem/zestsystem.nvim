@@ -156,6 +156,9 @@ in rec {
     inherit extraConfig extraPackages plugins;
     defaultEditor = true;
     enable = true;
+    viAlias = true;
+    vimAlias = true;
+    vimdiffAlias = true;
     withNodeJs = true;
     withPython3 = true;
     withRuby = true;
