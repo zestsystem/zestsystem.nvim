@@ -96,7 +96,7 @@ local function init()
             null_ls.builtins.formatting.terraform_fmt.with({
                 extra_filetypes = { "hcl" },
             }),
-            null_ls.builtins.formatting.alejandra
+            null_ls.builtins.formatting.nixfmt,
         },
     })
 
