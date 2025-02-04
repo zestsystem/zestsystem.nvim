@@ -86,7 +86,6 @@ in rec {
     with pkgs; [
       # languages
       nodejs
-      python314
       rustc
 
       # language servers
@@ -114,7 +113,7 @@ in rec {
       gofumpt
       golines
       alejandra
-      python314Packages.black
+      python3Packages.black
       rustfmt
       terraform
 
