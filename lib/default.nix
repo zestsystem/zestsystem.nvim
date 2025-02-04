@@ -1,23 +1,57 @@
 {inputs}: let
   inherit (inputs.nixpkgs) legacyPackages;
 in rec {
-  mkCopilotChat = {system}: let
-    inherit (pkgs) vimUtils;
-    inherit (vimUtils) buildVimPlugin;
-    pkgs = legacyPackages.${system};
-  in
-    buildVimPlugin {
-      name = "CopilotChat";
-      src = inputs.copilotchat;
-    };
-
   mkVimPlugin = {system}: let
     inherit (pkgs) vimUtils;
     inherit (vimUtils) buildVimPlugin;
     pkgs = legacyPackages.${system};
   in
     buildVimPlugin {
+      buildInputs = with pkgs; [doppler nodejs];
+
+      dependencies = with pkgs.vimPlugins; [
+        nvim-lspconfig
+        nvim-treesitter.withAllGrammars
+        null-ls-nvim
+        rust-tools-nvim
+        purescript-vim
+        haskell-tools-nvim
+
+        # telescope
+        plenary-nvim
+        popup-nvim
+        telescope-nvim
+
+        # theme
+        rose-pine
+
+        # extras
+        ChatGPT-nvim
+        copilot-lua
+        gitsigns-nvim
+        lualine-nvim
+        nerdcommenter
+        noice-nvim
+        nui-nvim
+        nvim-colorizer-lua
+        nvim-notify
+        nvim-treesitter-context
+        rainbow-delimiters-nvim
+        vim-fugitive
+        harpoon
+
+        luasnip
+        # autocomplete
+        nvim-cmp
+        cmp-nvim-lsp
+        cmp-buffer
+        cmp-path
+        friendly-snippets
+        cmp_luasnip
+      ];
+
       name = "zestsystem";
+
       postInstall = ''
         rm -rf $out/.envrc
         rm -rf $out/.gitignore
@@ -28,70 +62,19 @@ in rec {
         rm -rf $out/justfile
         rm -rf $out/lib
       '';
+
       src = ../.;
     };
 
   mkNeovimPlugins = {system}: let
     inherit (pkgs) vimPlugins;
-    CopilotChat-nvim = mkCopilotChat {inherit system;};
     pkgs = legacyPackages.${system};
     zestsystem-nvim = mkVimPlugin {inherit system;};
-    vim-just = pkgs.vimUtils.buildVimPlugin {
-      name = "vim-just";
-      nativeBuildInputs = with pkgs; [pkg-config readline];
-      src = pkgs.fetchFromGitHub {
-        owner = "NoahTheDuke";
-        repo = "vim-just";
-        rev = "927b41825b9cd07a40fc15b4c68635c4b36fa923";
-        sha256 = "sha256-BmxYWUVBzTowH68eWNrQKV1fNN9d1hRuCnXqbEagRoY=";
-      };
-    };
-  in [
-    # languages
-    vim-just
-    vimPlugins.nvim-lspconfig
-    vimPlugins.nvim-treesitter.withAllGrammars
-    vimPlugins.null-ls-nvim
-    vimPlugins.rust-tools-nvim
-    vimPlugins.purescript-vim
-    vimPlugins.haskell-tools-nvim
-
-    # telescope
-    vimPlugins.plenary-nvim
-    vimPlugins.popup-nvim
-    vimPlugins.telescope-nvim
-
-    # theme
-    vimPlugins.rose-pine
-
-    # extras
-    vimPlugins.ChatGPT-nvim
-    vimPlugins.copilot-lua
-    vimPlugins.gitsigns-nvim
-    vimPlugins.lualine-nvim
-    vimPlugins.nerdcommenter
-    vimPlugins.noice-nvim
-    vimPlugins.nui-nvim
-    vimPlugins.nvim-colorizer-lua
-    vimPlugins.nvim-notify
-    vimPlugins.nvim-treesitter-context
-    vimPlugins.rainbow-delimiters-nvim
-    vimPlugins.vim-fugitive
-    vimPlugins.harpoon
-
-    vimPlugins.luasnip
-    # autocomplete
-    vimPlugins.nvim-cmp
-    vimPlugins.cmp-nvim-lsp
-    vimPlugins.cmp-buffer
-    vimPlugins.cmp-path
-    vimPlugins.friendly-snippets
-    vimPlugins.cmp_luasnip
-    #vimPlugins.nvim-web-devicons # https://github.com/intel/intel-one-mono/issues/9
-
-    # configuration
-    zestsystem-nvim
-  ];
+  in
+    with vimPlugins; [
+      # configuration
+      zestsystem-nvim
+    ];
 
   mkExtraPackages = {system}: let
     inherit (pkgs) nodePackages python3Packages;
