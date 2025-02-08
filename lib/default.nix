@@ -27,6 +27,7 @@ in rec {
 
         # extras
         ChatGPT-nvim
+        avante-nvim
         copilot-lua
         gitsigns-nvim
         lualine-nvim
