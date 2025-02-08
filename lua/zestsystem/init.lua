@@ -7,6 +7,7 @@ local function init()
     require 'zestsystem.git-related'.init()
     require 'zestsystem.snippets'.init()
     require 'zestsystem.tools'.init()
+    require 'zestsystem.ai'.init()
 end
 
 return {

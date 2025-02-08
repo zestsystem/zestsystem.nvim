@@ -1,4 +1,3 @@
-local copilot = require 'copilot'
 local lspconfig = require 'lspconfig'
 local ht = require 'haskell-tools'
 local rust_tools = require 'rust-tools'
@@ -75,17 +74,6 @@ local function init()
             { name = "luasnip" },
         }, { { name = "buffer" } }, { { name = "path" } })
     })
-
-    -- Copilot setup
-    copilot.setup {
-        suggestion = {
-            auto_trigger = true,
-            keymap = {
-                accept = "<C-y>",
-            }
-        }
-    }
-
 
     null_ls.setup({
         sources = {
