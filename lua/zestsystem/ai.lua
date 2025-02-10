@@ -10,12 +10,6 @@ local function init()
             }
         }
     }
-
-
-    -- Avante setup
-    require('avante').setup({
-        -- Your config here!
-    })
 end
 -- Avante setup
 return {
