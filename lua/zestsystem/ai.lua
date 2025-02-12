@@ -1,4 +1,5 @@
 local copilot = require 'copilot'
+local aider = require 'aider'
 
 local function init()
     -- Copilot setup
@@ -10,8 +11,16 @@ local function init()
             }
         }
     }
+
+
+
+    -- Aider setup
+    aider.setup {}
+    vim.api.nvim_set_keymap('n', '<leader>Ao', ':AiderOpen<CR>', { noremap = true, silent = true })
+    vim.api.nvim_set_keymap('n', '<leader>Am', ':AiderAddModifiedFiles<CR>', { noremap = true, silent = true })
 end
--- Avante setup
+
+
 return {
     init = init
 }

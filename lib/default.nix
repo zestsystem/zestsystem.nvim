@@ -28,6 +28,7 @@ in rec {
         # extras
         ChatGPT-nvim
         copilot-lua
+        aider-nvim
         gitsigns-nvim
         lualine-nvim
         nerdcommenter
