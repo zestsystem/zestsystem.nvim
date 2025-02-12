@@ -16,7 +16,7 @@ local function init()
 
     -- Aider setup
     aider.setup {}
-    vim.api.nvim_set_keymap('n', '<leader>Ao', ':AiderOpen --mini --no-auto-commits --watch-files<CR>', { noremap = true, silent = true })
+    vim.api.nvim_set_keymap('n', '<leader>Ao', ':AiderOpen --mini --no-auto-commits<CR>', { noremap = true, silent = true })
     vim.api.nvim_set_keymap('n', '<leader>Am', ':AiderAddModifiedFiles<CR>', { noremap = true, silent = true })
 end
 
