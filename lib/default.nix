@@ -99,7 +99,6 @@ in rec {
       nodePackages."diagnostic-languageserver"
       nodePackages."dockerfile-language-server-nodejs"
       nodePackages."purescript-language-server"
-      nodePackages."svelte-language-server"
       nodePackages."typescript"
       nodePackages."typescript-language-server"
       nodePackages."vscode-langservers-extracted"
@@ -108,6 +107,7 @@ in rec {
       ocamlPackages.lsp
       pyright
       rust-analyzer
+      svelte-language-server
       terraform-ls
 
       # formatters
