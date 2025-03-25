@@ -25,6 +25,8 @@ local function init()
             vim.keymap.set("n", "<leader>t", ":Git push -u origin ", opts)
         end,
     })
+
+    vim.keymap.set('n', '<leader>uu', vim.cmd.UndotreeToggle)
 end
 
 

@@ -29,6 +29,7 @@ in rec {
         ChatGPT-nvim
         copilot-lua
         gitsigns-nvim
+        undotree
         lualine-nvim
         nerdcommenter
         noice-nvim
