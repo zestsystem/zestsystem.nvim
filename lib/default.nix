@@ -12,7 +12,6 @@ in rec {
       dependencies = with pkgs.vimPlugins; [
         nvim-lspconfig
         nvim-treesitter.withAllGrammars
-        null-ls-nvim
         rust-tools-nvim
         purescript-vim
         haskell-tools-nvim

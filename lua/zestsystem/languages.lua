@@ -4,7 +4,6 @@ local rust_tools = require 'rust-tools'
 local treesitter = require 'nvim-treesitter.configs'
 local treesitter_context = require 'treesitter-context'
 local cmp = require 'cmp'
-local null_ls = require 'null-ls'
 
 local function autocmd(args)
     local event = args[1]
