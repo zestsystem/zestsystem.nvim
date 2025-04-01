@@ -75,6 +75,7 @@ local function init()
         }, { { name = "buffer" } }, { { name = "path" } })
     })
 
+    --[[
     null_ls.setup({
         sources = {
             null_ls.builtins.formatting.treefmt,
@@ -87,6 +88,7 @@ local function init()
             null_ls.builtins.formatting.nixfmt,
         },
     })
+    --]]
 
     --[[
     ht.setup {
