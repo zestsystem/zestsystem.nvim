@@ -4,6 +4,7 @@ local rust_tools = require 'rust-tools'
 local treesitter = require 'nvim-treesitter.configs'
 local treesitter_context = require 'treesitter-context'
 local cmp = require 'cmp'
+local conform = require 'conform'
 
 local function autocmd(args)
     local event = args[1]
@@ -72,6 +73,25 @@ local function init()
             { name = "friendly-snippets" },
             { name = "luasnip" },
         }, { { name = "buffer" } }, { { name = "path" } })
+    })
+
+    conform.setup({
+        optional = true,
+        opts = {
+            formatters_by_ft = {
+                ["javascript"] = { "dprint", "prettier" },
+                ["javascriptreact"] = { "dprint" },
+                ["typescript"] = { "dprint", "prettier" },
+                ["typescriptreact"] = { "dprint" },
+            },
+            formatters = {
+                dprint = {
+                    condition = function(_, ctx)
+                        return vim.fs.find({ "dprint.json" }, { path = ctx.filename, upward = true })[1]
+                    end,
+                },
+            },
+        },
     })
 
     --[[
