@@ -15,6 +15,7 @@ in rec {
         rust-tools-nvim
         purescript-vim
         haskell-tools-nvim
+        neoformat
 
         # telescope
         plenary-nvim
