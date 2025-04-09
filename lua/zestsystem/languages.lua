@@ -76,20 +76,12 @@ local function init()
     })
 
     conform.setup({
-        optional = true,
         opts = {
             formatters_by_ft = {
-                ["javascript"] = { "dprint", "prettier" },
-                ["javascriptreact"] = { "dprint" },
-                ["typescript"] = { "dprint", "prettier" },
-                ["typescriptreact"] = { "dprint" },
-            },
-            formatters = {
-                dprint = {
-                    condition = function(_, ctx)
-                        return vim.fs.find({ "dprint.json" }, { path = ctx.filename, upward = true })[1]
-                    end,
-                },
+                ["javascript"] = { "prettier" },
+                ["javascriptreact"] = { "prettier" },
+                ["typescript"] = { "prettier" },
+                ["typescriptreact"] = { "prettier" },
             },
             format_on_save = {
                 -- These options will be passed to conform.format()
