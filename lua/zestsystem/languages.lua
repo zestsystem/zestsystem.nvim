@@ -43,7 +43,7 @@ local function on_attach(client, buffer)
     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
     vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-    vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, opts)
+    vim.keymap.set('n', '<leader>f', function() conform.format() end, { noremap = true, silent = true})
 
     if client.server_capabilities.documentHighlightProvider then
         autocmd_clear { group = augroup_highlight, buffer = buffer }
@@ -76,20 +76,18 @@ local function init()
     })
 
     conform.setup({
-        opts = {
-            formatters_by_ft = {
-                ["javascript"] = { "prettierd", "prettier" },
-                ["javascriptreact"] = { "prettierd","prettier" },
-                ["typescript"] = { "prettierd", "prettier" },
-                ["typescriptreact"] = { "prettierd", "prettier" },
-            },
-            format_on_save = {
-                -- These options will be passed to conform.format()
-                timeout_ms = 500,
-                lsp_format = "fallback",
-            },
+    optional = true,
+    opts = {
+        formatters_by_ft = {
+            javascript = { "prettier" },
+            javascriptreact = { "prettier" },
+            typescript = { "prettier" },
+            typescriptreact = { "prettier" },
+            html = { "prettier" },
+            css = { "prettier" },
         },
-    })
+    },
+})
 
     --[[
     null_ls.setup({
