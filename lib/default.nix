@@ -111,6 +111,7 @@ in rec {
       terraform-ls
 
       # formatters
+      prettierd
       gofumpt
       golines
       alejandra
