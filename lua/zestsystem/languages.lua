@@ -4,7 +4,7 @@ local rust_tools = require 'rust-tools'
 local treesitter = require 'nvim-treesitter.configs'
 local treesitter_context = require 'treesitter-context'
 local cmp = require 'cmp'
-local conform = require 'conform'
+local null_ls = require 'null-ls'
 
 local function autocmd(args)
     local event = args[1]
@@ -75,22 +75,32 @@ local function init()
         }, { { name = "buffer" } }, { { name = "path" } })
     })
 
+    --[[
     conform.setup({
         optional = true,
         opts = {
             formatters_by_ft = {
-                lua = { "stylua" },
-                javascript = { "prettierd", "prettier", { stop_after_first = true } },
-                javascriptreact = { "prettierd", "prettier", { stop_after_first = true } },
-                typescript = { "prettierd", "prettier", { stop_after_first = true } },
-                typescriptreact = { "prettierd", "prettier", { stop_after_first = true } },
-                html = { "prettierd", "prettier", { stop_after_first = true } },
-                css = { "prettierd", "prettier", { stop_after_first = true } },
+                ["javascript"] = { "dprint", "prettier" },
+                ["javascriptreact"] = { "dprint" },
+                ["typescript"] = { "dprint", "prettier" },
+                ["typescriptreact"] = { "dprint" },
+            },
+            formatters = {
+                dprint = {
+                    condition = function(_, ctx)
+                        return vim.fs.find({ "dprint.json" }, { path = ctx.filename, upward = true })[1]
+                    end,
+                },
             },
         },
+        format_on_save = {
+            -- These options will be passed to conform.format()
+            timeout_ms = 500,
+            lsp_format = "fallback",
+        },
     })
+    --]]
 
-    --[[
     null_ls.setup({
         sources = {
             null_ls.builtins.formatting.treefmt,
@@ -103,7 +113,6 @@ local function init()
             null_ls.builtins.formatting.nixfmt,
         },
     })
-    --]]
 
     --[[
     ht.setup {
