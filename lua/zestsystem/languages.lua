@@ -251,7 +251,7 @@ local function init()
         svelte = {},
         tailwindcss = {},
         terraformls = {},
-        tsserver = {},
+        ts_ls = {},
         yamlls = {
             settings = {
                 yaml = {
