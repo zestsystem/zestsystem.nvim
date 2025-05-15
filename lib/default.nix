@@ -15,7 +15,6 @@ in rec {
         rust-tools-nvim
         purescript-vim
         haskell-tools-nvim
-        none-ls-nvim
         conform-nvim
 
 

@@ -4,7 +4,6 @@ local rust_tools = require 'rust-tools'
 local treesitter = require 'nvim-treesitter.configs'
 local treesitter_context = require 'treesitter-context'
 local cmp = require 'cmp'
-local null_ls = require 'null-ls'
 local conform = require 'conform'
 
 local function autocmd(args)
@@ -113,21 +112,6 @@ local function init()
             lsp_format = "fallback",
         },
     })
-
-    --[[
-    null_ls.setup({
-        sources = {
-            null_ls.builtins.formatting.treefmt,
-            null_ls.builtins.formatting.prettier.with {
-                extra_filetypes = { "svelte" }
-            },
-            null_ls.builtins.formatting.terraform_fmt.with({
-                extra_filetypes = { "hcl" },
-            }),
-            null_ls.builtins.formatting.nixfmt,
-        },
-    })
-    --]]
 
     --[[
     ht.setup {
