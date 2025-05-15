@@ -5,6 +5,7 @@ local treesitter = require 'nvim-treesitter.configs'
 local treesitter_context = require 'treesitter-context'
 local cmp = require 'cmp'
 local null_ls = require 'null-ls'
+local conform = require 'conform'
 
 local function autocmd(args)
     local event = args[1]
@@ -75,22 +76,36 @@ local function init()
         }, { { name = "buffer" } }, { { name = "path" } })
     })
 
-    --[[
+    local prettier = { "prettierd", "prettier", stop_after_first = true }
     conform.setup({
-        optional = true,
-        opts = {
-            formatters_by_ft = {
-                ["javascript"] = { "dprint", "prettier" },
-                ["javascriptreact"] = { "dprint" },
-                ["typescript"] = { "dprint", "prettier" },
-                ["typescriptreact"] = { "dprint" },
-            },
-            formatters = {
-                dprint = {
-                    condition = function(_, ctx)
-                        return vim.fs.find({ "dprint.json" }, { path = ctx.filename, upward = true })[1]
-                    end,
-                },
+        formatters_by_ft = {
+            javascript = prettier,
+            typescript = prettier,
+            javascriptreact = prettier,
+            typescriptreact = prettier,
+            css = prettier,
+            graphql = prettier,
+            html = prettier,
+            json = { "prettierd", "prettier", "jq", stop_after_first = true },
+            json5 = prettier,
+            jsonc = prettier,
+            yaml = prettier,
+            -- markdown = function(bufnr) return { first(bufnr, "prettierd", "prettier"), "injected" } end,
+            markdown = { "injected" },
+            norg = { "injected" },
+            lua = { "stylua" },
+            go = { "goimports", "gofmt" },
+            query = { "format-queries" },
+            sh = { "shfmt" },
+            python = { "isort", "black" },
+            zig = { "zigfmt" },
+            ["_"] = { "trim_whitespace", "trim_newlines" },
+        },
+        formatters = {
+            dprint = {
+                condition = function(_, ctx)
+                    return vim.fs.find({ "dprint.json" }, { path = ctx.filename, upward = true })[1]
+                end,
             },
         },
         format_on_save = {
@@ -99,8 +114,8 @@ local function init()
             lsp_format = "fallback",
         },
     })
-    --]]
 
+    --[[
     null_ls.setup({
         sources = {
             null_ls.builtins.formatting.treefmt,
@@ -113,6 +128,7 @@ local function init()
             null_ls.builtins.formatting.nixfmt,
         },
     })
+    --]]
 
     --[[
     ht.setup {

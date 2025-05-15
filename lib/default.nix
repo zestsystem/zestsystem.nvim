@@ -16,6 +16,7 @@ in rec {
         purescript-vim
         haskell-tools-nvim
         none-ls-nvim
+        conform-nvim
 
 
         # telescope
