@@ -90,6 +90,7 @@ local function init()
             yaml = prettier,
             -- markdown = function(bufnr) return { first(bufnr, "prettierd", "prettier"), "injected" } end,
             markdown = { "injected" },
+            nix = { "nixfmt" },
             norg = { "injected" },
             lua = { "stylua" },
             go = { "goimports", "gofmt" },
