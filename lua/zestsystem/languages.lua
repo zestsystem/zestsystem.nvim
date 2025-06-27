@@ -166,7 +166,12 @@ local function init()
                     },
                 },
             },
-            on_attach = on_attach,
+            on_attach = function(client, bufnr)
+                -- Hover actions
+                vim.keymap.set("n", "K", rust_tools.hover_actions.hover_actions, { buffer = bufnr })
+                -- Code action groups
+                vim.keymap.set("n", "<Leader>ca", rust_tools.code_action_group.code_action_group, { buffer = bufnr })
+            end,
         },
     }
 
