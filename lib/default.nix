@@ -1,13 +1,20 @@
-{inputs}: let
+{ inputs }:
+let
   inherit (inputs.nixpkgs) legacyPackages;
-in rec {
-  mkVimPlugin = {system}: let
-    inherit (pkgs) vimUtils;
-    inherit (vimUtils) buildVimPlugin;
-    pkgs = legacyPackages.${system};
-  in
+in
+rec {
+  mkVimPlugin =
+    { system }:
+    let
+      inherit (pkgs) vimUtils;
+      inherit (vimUtils) buildVimPlugin;
+      pkgs = legacyPackages.${system};
+    in
     buildVimPlugin {
-      buildInputs = with pkgs; [doppler nodejs];
+      buildInputs = with pkgs; [
+        doppler
+        nodejs
+      ];
 
       dependencies = with pkgs.vimPlugins; [
         nvim-lspconfig
@@ -16,7 +23,6 @@ in rec {
         purescript-vim
         haskell-tools-nvim
         conform-nvim
-
 
         # telescope
         plenary-nvim
@@ -30,6 +36,7 @@ in rec {
         ChatGPT-nvim
         copilot-lua
         gitsigns-nvim
+        git-worktree-nvim
         undotree
         lualine-nvim
         nerdcommenter
@@ -68,24 +75,30 @@ in rec {
       src = ../.;
     };
 
-  mkNeovimPlugins = {system}: let
-    inherit (pkgs) vimPlugins;
-    pkgs = legacyPackages.${system};
-    zestsystem-nvim = mkVimPlugin {inherit system;};
-  in
-    with vimPlugins; [
+  mkNeovimPlugins =
+    { system }:
+    let
+      inherit (pkgs) vimPlugins;
+      pkgs = legacyPackages.${system};
+      zestsystem-nvim = mkVimPlugin { inherit system; };
+    in
+    with vimPlugins;
+    [
       # configuration
       zestsystem-nvim
     ];
 
-  mkExtraPackages = {system}: let
-    inherit (pkgs) nodePackages python3Packages;
-    pkgs = import inputs.nixpkgs {
-      inherit system;
-      config.allowUnfree = true;
-    };
-  in
-    with pkgs; [
+  mkExtraPackages =
+    { system }:
+    let
+      inherit (pkgs) nodePackages python3Packages;
+      pkgs = import inputs.nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+    in
+    with pkgs;
+    [
       # languages
       nodejs
       rustc
@@ -134,16 +147,18 @@ in rec {
     EOF
   '';
 
-  mkNeovim = {system}: let
-    inherit (pkgs) lib neovim;
-    extraPackages = mkExtraPackages {inherit system;};
-    pkgs = legacyPackages.${system};
-    start = mkNeovimPlugins {inherit system;};
-  in
+  mkNeovim =
+    { system }:
+    let
+      inherit (pkgs) lib neovim;
+      extraPackages = mkExtraPackages { inherit system; };
+      pkgs = legacyPackages.${system};
+      start = mkNeovimPlugins { inherit system; };
+    in
     neovim.override {
       configure = {
         customRC = mkExtraConfig;
-        packages.main = {inherit start;};
+        packages.main = { inherit start; };
       };
       extraMakeWrapperArgs = ''--suffix PATH : "${lib.makeBinPath extraPackages}"'';
       withNodeJs = true;
@@ -151,19 +166,22 @@ in rec {
       withRuby = true;
     };
 
-  mkHomeManager = {system}: let
-    extraConfig = mkExtraConfig;
-    extraPackages = mkExtraPackages {inherit system;};
-    plugins = mkNeovimPlugins {inherit system;};
-  in {
-    inherit extraConfig extraPackages plugins;
-    defaultEditor = true;
-    enable = true;
-    viAlias = true;
-    vimAlias = true;
-    vimdiffAlias = true;
-    withNodeJs = true;
-    withPython3 = true;
-    withRuby = true;
-  };
+  mkHomeManager =
+    { system }:
+    let
+      extraConfig = mkExtraConfig;
+      extraPackages = mkExtraPackages { inherit system; };
+      plugins = mkNeovimPlugins { inherit system; };
+    in
+    {
+      inherit extraConfig extraPackages plugins;
+      defaultEditor = true;
+      enable = true;
+      viAlias = true;
+      vimAlias = true;
+      vimdiffAlias = true;
+      withNodeJs = true;
+      withPython3 = true;
+      withRuby = true;
+    };
 }
