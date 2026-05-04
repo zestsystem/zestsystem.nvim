@@ -3,6 +3,10 @@ local git_worktree = require('git-worktree')
 -- Builtin
 local function init()
     vim.keymap.set('n', '<leader>gs', '<CMD>Git<CR>')
+    vim.keymap.set('n', '<leader>gd', '<CMD>DiffviewOpen<CR>')
+    vim.keymap.set('n', '<leader>gm', '<CMD>DiffviewOpen origin/main...HEAD<CR>')
+    vim.keymap.set('n', '<leader>gq', '<CMD>DiffviewClose<CR>')
+    vim.keymap.set('n', '<leader>gh', '<CMD>DiffviewFileHistory %<CR>')
 
     vim.api.nvim_create_autocmd("BufWinEnter", {
         pattern = "*",
