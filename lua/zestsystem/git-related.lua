@@ -1,3 +1,5 @@
+local git_worktree = require('git-worktree')
+
 -- Builtin
 local function init()
     vim.keymap.set('n', '<leader>gs', '<CMD>Git<CR>')
