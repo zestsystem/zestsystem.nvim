@@ -3,6 +3,7 @@ local ht = require 'haskell-tools'
 local rust_tools = require 'rust-tools'
 local treesitter = require 'nvim-treesitter.configs'
 local treesitter_context = require 'treesitter-context'
+local rainbow_delimiters = require 'rainbow-delimiters.setup'
 local cmp = require 'cmp'
 local conform = require 'conform'
 
@@ -298,6 +299,12 @@ local function init()
     treesitter.setup {
         highlight = { enable = true },
         indent = { enable = true },
+    }
+
+    rainbow_delimiters.setup {
+        condition = function(bufnr)
+            return vim.bo[bufnr].buftype == ''
+        end,
     }
 
     treesitter_context.setup()
