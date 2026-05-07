@@ -1,11 +1,6 @@
-local util = require 'zestsystem.util'
+local telescope = require 'telescope'
 
 local function init()
-    local telescope = util.optional_require 'telescope'
-    if not telescope then
-        return
-    end
-
     telescope.setup {
         defaults = {
             file_ignore_patterns = {
@@ -17,7 +12,7 @@ local function init()
         }
     }
 
-    pcall(telescope.load_extension, 'notify')
+    telescope.load_extension('notify')
 
     local map = vim.api.nvim_set_keymap
 

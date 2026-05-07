@@ -1,30 +1,27 @@
-local util = require 'zestsystem.util'
+local rosepine = require 'rose-pine'
+local colorizer = require 'colorizer'
+local gitsigns = require 'gitsigns'
+local lualine = require 'lualine'
+local noice = require 'noice'
 
 local function init()
-    local rosepine = util.optional_require 'rose-pine'
-    local colorizer = util.optional_require 'colorizer'
-    local gitsigns = util.optional_require 'gitsigns'
-    local lualine = util.optional_require 'lualine'
-    local noice = util.optional_require 'noice'
+    rosepine.setup({
+        disable_background = true,
+    })
 
-    if rosepine then
-        rosepine.setup({
-            disable_background = true,
-        })
-    end
+    colorizer.setup {}
 
-    if colorizer then
-        colorizer.setup {}
-    end
+    gitsigns.setup {}
 
-    if gitsigns then
-        gitsigns.setup {}
-    end
-
-    if lualine then
-        local lualine_x = {}
-
-        if noice then
+    lualine.setup {
+        options = {
+            component_separators = { left = '', right = '' },
+            extensions = { "fzf", "quickfix" },
+            icons_enabled = false,
+            section_separators = { left = '', right = '' },
+            theme = "rose-pine"
+        },
+        sections = {
             lualine_x = {
                 {
                     noice.api.status.message.get_hl,
@@ -45,26 +42,11 @@ local function init()
                     cond = noice.api.status.search.has,
                     color = { fg = "#EED49F" },
                 },
-            }
-        end
-
-        lualine.setup {
-            options = {
-                component_separators = { left = '', right = '' },
-                extensions = { "fzf", "quickfix" },
-                icons_enabled = false,
-                section_separators = { left = '', right = '' },
-                theme = "rose-pine"
             },
-            sections = {
-                lualine_x = lualine_x,
-            }
         }
-    end
+    }
 
-    if rosepine then
-        vim.cmd.colorscheme "rose-pine"
-    end
+    vim.cmd.colorscheme "rose-pine"
 end
 
 return {

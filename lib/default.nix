@@ -62,9 +62,7 @@ rec {
       name = "zestsystem";
 
       postInstall = ''
-        rm -rf $out/.direnv
         rm -rf $out/.envrc
-        rm -rf $out/.git
         rm -rf $out/.gitignore
         rm -rf $out/LICENSE
         rm -rf $out/README.md
