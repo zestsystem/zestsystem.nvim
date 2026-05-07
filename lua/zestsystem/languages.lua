@@ -1,11 +1,4 @@
-local lspconfig = require 'lspconfig'
-local ht = require 'haskell-tools'
-local rust_tools = require 'rust-tools'
-local treesitter = require 'nvim-treesitter.configs'
-local treesitter_context = require 'treesitter-context'
-local rainbow_delimiters = require 'rainbow-delimiters.setup'
-local cmp = require 'cmp'
-local conform = require 'conform'
+local util = require 'zestsystem.util'
 
 local function autocmd(args)
     local event = args[1]
@@ -54,6 +47,18 @@ local function on_attach(client, buffer)
 end
 
 local function init()
+    local lspconfig = util.optional_require 'lspconfig'
+    local rust_tools = util.optional_require 'rust-tools'
+    local treesitter = util.optional_require 'nvim-treesitter.configs'
+    local treesitter_context = util.optional_require 'treesitter-context'
+    local rainbow_delimiters = util.optional_require 'rainbow-delimiters.setup'
+    local cmp = util.optional_require 'cmp'
+    local conform = util.optional_require 'conform'
+
+    if not (lspconfig and cmp and conform) then
+        return
+    end
+
     -- Completion setup
     cmp.setup({
         snippet = {
@@ -149,32 +154,34 @@ local function init()
 
 
     -- Rust specific setup
-    rust_tools.setup {
-        server = {
-            settings = {
-                ['rust-analyzer'] = {
-                    cargo = {
-                        buildScripts = {
-                            enable = true,
+    if rust_tools then
+        rust_tools.setup {
+            server = {
+                settings = {
+                    ['rust-analyzer'] = {
+                        cargo = {
+                            buildScripts = {
+                                enable = true,
+                            },
+                        },
+                        diagnostics = {
+                            enable = false,
+                        },
+                        files = {
+                            excludeDirs = { ".direnv", ".git" },
+                            watcherExclude = { ".direnv", ".git" },
                         },
                     },
-                    diagnostics = {
-                        enable = false,
-                    },
-                    files = {
-                        excludeDirs = { ".direnv", ".git" },
-                        watcherExclude = { ".direnv", ".git" },
-                    },
                 },
+                on_attach = function(client, bufnr)
+                    -- Hover actions
+                    vim.keymap.set("n", "K", rust_tools.hover_actions.hover_actions, { buffer = bufnr })
+                    -- Code action groups
+                    vim.keymap.set("n", "<Leader>ca", rust_tools.code_action_group.code_action_group, { buffer = bufnr })
+                end,
             },
-            on_attach = function(client, bufnr)
-                -- Hover actions
-                vim.keymap.set("n", "K", rust_tools.hover_actions.hover_actions, { buffer = bufnr })
-                -- Code action groups
-                vim.keymap.set("n", "<Leader>ca", rust_tools.code_action_group.code_action_group, { buffer = bufnr })
-            end,
-        },
-    }
+        }
+    end
 
     local language_servers = {
         bashls = {},
@@ -286,7 +293,9 @@ local function init()
             end
         end
 
-        lspconfig[server].setup(config)
+        if lspconfig[server] then
+            lspconfig[server].setup(config)
+        end
     end
 
     -- Global mappings.
@@ -296,18 +305,24 @@ local function init()
     vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
     vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 
-    treesitter.setup {
-        highlight = { enable = true },
-        indent = { enable = true },
-    }
+    if treesitter then
+        treesitter.setup {
+            highlight = { enable = true },
+            indent = { enable = true },
+        }
+    end
 
-    rainbow_delimiters.setup {
-        condition = function(bufnr)
-            return vim.bo[bufnr].buftype == ''
-        end,
-    }
+    if rainbow_delimiters then
+        rainbow_delimiters.setup {
+            condition = function(bufnr)
+                return vim.bo[bufnr].buftype == ''
+            end,
+        }
+    end
 
-    treesitter_context.setup()
+    if treesitter_context then
+        treesitter_context.setup()
+    end
 end
 
 return {

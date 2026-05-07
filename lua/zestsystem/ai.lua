@@ -1,6 +1,11 @@
-local copilot = require 'copilot'
+local util = require 'zestsystem.util'
 
 local function init()
+    local copilot = util.optional_require 'copilot'
+    if not copilot then
+        return
+    end
+
     -- Copilot setup
     copilot.setup {
         suggestion = {
