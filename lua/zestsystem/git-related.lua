@@ -1,6 +1,37 @@
 -- Builtin
 local function init()
+    local gitsigns = require 'gitsigns'
+
+    gitsigns.setup {
+        on_attach = function(bufnr)
+            local opts = { buffer = bufnr, remap = false }
+
+            vim.keymap.set("n", "]c", function()
+                if vim.wo.diff then
+                    return "]c"
+                end
+                vim.schedule(gitsigns.next_hunk)
+                return "<Ignore>"
+            end, { buffer = bufnr, expr = true, remap = false })
+
+            vim.keymap.set("n", "[c", function()
+                if vim.wo.diff then
+                    return "[c"
+                end
+                vim.schedule(gitsigns.prev_hunk)
+                return "<Ignore>"
+            end, { buffer = bufnr, expr = true, remap = false })
+
+            vim.keymap.set("n", "<leader>hp", gitsigns.preview_hunk, opts)
+            vim.keymap.set("n", "<leader>hb", gitsigns.blame_line, opts)
+            vim.keymap.set("n", "<leader>hd", gitsigns.diffthis, opts)
+        end,
+    }
+
     vim.keymap.set('n', '<leader>gs', '<CMD>Git<CR>')
+    vim.keymap.set('n', '<leader>gl', '<CMD>DiffviewOpen HEAD~1..HEAD<CR>')
+    vim.keymap.set('n', '<leader>gm', '<CMD>DiffviewOpen origin/main...HEAD<CR>')
+    vim.keymap.set('n', '<leader>gq', '<CMD>DiffviewClose<CR>')
 
     vim.api.nvim_create_autocmd("BufWinEnter", {
         pattern = "*",

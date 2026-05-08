@@ -35,6 +35,7 @@ rec {
         # extras
         ChatGPT-nvim
         copilot-lua
+        diffview-nvim
         gitsigns-nvim
         git-worktree-nvim
         undotree

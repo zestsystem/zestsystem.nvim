@@ -1,6 +1,5 @@
 local rosepine = require 'rose-pine'
 local colorizer = require 'colorizer'
-local gitsigns = require 'gitsigns'
 local lualine = require 'lualine'
 local noice = require 'noice'
 
@@ -10,8 +9,6 @@ local function init()
     })
 
     colorizer.setup {}
-
-    gitsigns.setup {}
 
     lualine.setup {
         options = {
