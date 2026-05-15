@@ -63,13 +63,25 @@ local function open_newest_branch_commit()
 end
 
 local function step_branch_commit(delta)
-    if diffview_review.index then
-        open_branch_commit(diffview_review.index + delta)
-    elseif delta > 0 then
-        open_branch_commit(1)
-    else
-        open_newest_branch_commit()
+    local commits, base = branch_commits()
+    if not commits or #commits == 0 then
+        open_branch_commit(1, commits, base)
+        return
     end
+
+    if not diffview_review.index then
+        open_branch_commit(delta > 0 and 1 or #commits, commits, base)
+        return
+    end
+
+    local index = diffview_review.index + delta
+    if index < 1 or index > #commits then
+        local edge = delta < 0 and "oldest" or "newest"
+        vim.notify(("Already at %s branch commit"):format(edge), vim.log.levels.INFO)
+        return
+    end
+
+    open_branch_commit(index, commits, base)
 end
 
 local function init()
